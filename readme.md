@@ -20,7 +20,6 @@ const mongoose = require('mongoose')
 
 // setup minimal koa application
 const Koa = require('koa')
-const router = require('koa-router')
 const app = new Koa()
 
 // setup basic mongoose model
@@ -29,21 +28,25 @@ const fooSchema = mongoose.Schema({
 })
 const Foo = mongoose.model('Foo', fooSchema)
 
-// setup basic CRUD REST API for Foo model
 const model = Foo
 const idParamName = 'foo'
 
-const router = new Router()
-router.get('/foo/:foo', crud.read({ model, idParamName }))
-router.post('/foo', crud.create({ model, idParamName }))
-router.put('/foo/:foo', crud.update({ model, idParamName }))
-router.del('/foo/:foo', crud.delete({ model, idParamName }))
-app.use(router.middleware())
+{ // setup basic CRUD REST API for Foo model
+  const Router = require('koa-router')
+  const router = new Router()
+
+  router.get('/foo/:foo', crud.read({ model, idParamName }))
+  router.post('/foo', crud.create({ model, idParamName }))
+  router.put('/foo/:foo', crud.update({ model, idParamName }))
+  router.del('/foo/:foo', crud.delete({ model, idParamName }))
+
+  app.use(router.middleware())
+}
 
 app.listen(3000)
 ```
 
-Note that any models used with `koa2-mongoose-crud` must conform to the
+Note that any model used with `koa2-mongoose-crud` must implement `model.getSafePaths(label, ctx)` and `model.getPublicDocument(doc, safePaths)` for basic filtering of readable / writable properties on different operations where label can be something like `create`, `read`, `update`, or `delete`.
 
 ## API
 
