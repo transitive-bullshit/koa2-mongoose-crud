@@ -28,12 +28,12 @@ const fooSchema = mongoose.Schema({
 })
 const Foo = mongoose.model('Foo', fooSchema)
 
-const model = Foo
-const idParamName = 'foo'
-
 { // setup basic CRUD REST API for Foo model
   const Router = require('koa-router')
   const router = new Router()
+
+  const model = Foo
+  const idParamName = 'foo'
 
   router.get('/foo/:foo', crud.read({ model, idParamName }))
   router.post('/foo', crud.create({ model, idParamName }))
