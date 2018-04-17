@@ -1,0 +1,49 @@
+{
+  "name": "koa2-mongoose-crud",
+  "version": "0.0.1",
+  "description": "Koa 2 CRUD middleware for Mongoose models.",
+  "main": "index.js",
+  "repository": "transitive-bullshit/koa2-mongoose-crud",
+  "author": "Travis Fischer <travis@automagical.ai>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=8"
+  },
+  "scripts": {
+    "test": "NODE_ENV=test mocha './{,!(node_modules)/**/}*.test.js'",
+    "test:watch": "NODE_ENV=test mocha './{,!(node_modules)/**/}*.test.js' --watch --bail"
+  },
+  "dependencies": {
+    "co-body": "^5.1.1",
+    "filter-object": "^3.0.0",
+    "flat": "^4.0.0",
+    "json-array-stream": "^0.1.2",
+    "mongoose-range-paginate": "^0.0.5",
+    "through2": "^2.0.3"
+  },
+  "devDependencies": {
+    "chai": "^4.1.2",
+    "mocha": "^5.1.0",
+    "mocha-standard": "^1.0.0",
+    "sinon": "^4.5.0",
+    "standard": "^11.0.0"
+  },
+  "keywords": [
+    "koa",
+    "koa2",
+    "mongoose",
+    "crud",
+    "middleware"
+  ],
+  "standard": {
+    "globals": [
+      "after",
+      "afterEach",
+      "before",
+      "beforeEach",
+      "context",
+      "describe",
+      "it"
+    ]
+  }
+}
