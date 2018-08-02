@@ -2,7 +2,7 @@
 
 > [Koa 2](http://koajs.com/) CRUD middleware for [Mongoose](http://mongoosejs.com/) models.
 
-[![NPM](https://img.shields.io/npm/v/koa2-mongoose-crud.svg)](https://www.npmjs.com/package/koa2-mongoose-crud) [![Build Status](https://travis-ci.org/transitive-bullshit/koa2-mongoose-crud.svg?branch=master)](https://travis-ci.org/transitive-bullshit/koa2-mongoose-crud) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
+[![NPM](https://img.shields.io/npm/v/koa2-mongoose-crud.svg)](https://www.npmjs.com/package/koa2-mongoose-crud) [![Build Status](https://travis-ci.com/transitive-bullshit/koa2-mongoose-crud.svg?branch=master)](https://travis-ci.com/transitive-bullshit/koa2-mongoose-crud) [![JavaScript Style Guide](https://img.shields.io/badge/code_style-standard-brightgreen.svg)](https://standardjs.com)
 
 ## Installation
 
