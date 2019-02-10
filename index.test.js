@@ -300,7 +300,7 @@ describe('koa2-mongoose-crud', () => {
       assert.deepEqual(model.findByIdAndUpdate.args[0], [
         'object-id',
         'safe-data',
-        { new: true, runValidators: true }
+        { runValidators: true }
       ])
       assert.deepEqual(crud.populate.args[0], [model, 'doc', ['a', 'b', 'c']])
       assert.deepEqual(model.getSafePaths.args[1], ['label-update', ctx])
