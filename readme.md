@@ -73,4 +73,4 @@ You may pass an `acl` parameter (short for Access Control List) to any of the cr
 
 ## License
 
-MIT © [Travis Fischer](https://github.com/transitive-bullshit)
+MIT © [Travis Fischer](https://transitivebullsh.it)

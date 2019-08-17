@@ -32,7 +32,13 @@ exports.create = (args = {}) => {
     const data = await exports.parse(ctx)
     const safePathsForCreate = model.getSafePaths(label, ctx)
     const safeData = exports.filter(data, safePathsForCreate)
-    if (acl) { await acl(ctx, safeData) }
+
+    if (acl) {
+      const opts = { skip: false }
+      await acl(ctx, safeData, opts)
+      if (opts.skip) return
+    }
+
     const doc = await model.create(safeData)
 
     const populate = acceptsPopulate
@@ -66,7 +72,11 @@ exports.read = (args = {}) => {
 
     const doc = await model.findById(id).exec()
     ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
-    if (acl) await acl(ctx, doc)
+    const opts = { skip: false }
+    if (acl) {
+      await acl(ctx, doc, opts)
+      if (opts.skip) return
+    }
 
     const populate = acceptsPopulate
       ? (ctx.query.populate === false || ctx.query.populate === 'false'
@@ -102,7 +112,9 @@ exports.update = (args = {}) => {
     if (acl) {
       const doc = await model.findById(id)
       ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
-      await acl(ctx, doc)
+      const opts = { skip: false }
+      await acl(ctx, doc, opts)
+      if (opts.skip) return
     }
 
     const data = await exports.parse(ctx)
@@ -145,7 +157,9 @@ exports.delete = (args = {}) => {
     if (acl) {
       const doc = await model.findById(id)
       ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
-      await acl(ctx, doc)
+      const opts = { skip: false }
+      await acl(ctx, doc, opts)
+      if (opts.skip) return
     }
 
     const doc = await model.findByIdAndRemove(id).exec()
@@ -187,7 +201,9 @@ exports.upsert = (args = {}) => {
       if (acl) {
         const doc = await model.findById(id)
         ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
-        await acl(ctx, doc)
+        const opts = { skip: false }
+        await acl(ctx, doc, opts)
+        if (opts.skip) return
       }
 
       const safePathsForUpdate = model.getSafePaths(updateLabel, ctx)
@@ -319,7 +335,9 @@ exports.archive = (args = {}) => {
     if (acl) {
       const doc = await model.findById(id)
       ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
-      await acl(ctx, doc)
+      const opts = { skip: false }
+      await acl(ctx, doc, opts)
+      if (opts.skip) return
     }
 
     const doc = await model.findByIdAndUpdate(id, { archived: true }).exec()

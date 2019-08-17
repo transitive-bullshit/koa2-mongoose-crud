@@ -4,7 +4,7 @@
   "description": "Koa 2 CRUD middleware for Mongoose models.",
   "main": "index.js",
   "repository": "transitive-bullshit/koa2-mongoose-crud",
-  "author": "Travis Fischer <travis@automagical.ai>",
+  "author": "Travis Fischer <travis@transitivebullsh.it>",
   "license": "MIT",
   "engines": {
     "node": ">=8"
