@@ -41,11 +41,7 @@ exports.create = (args = {}) => {
 
     const doc = await model.create(safeData)
 
-    const populate = acceptsPopulate
-      ? mergeArrayUnique(ctx.query.populate, defaultPopulate)
-      : mergeArrayUnique(defaultPopulate)
-
-    await exports.populate(model, doc, populate)
+    await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
     const safePathsForRead = model.getSafePaths('read', ctx)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)
@@ -78,13 +74,7 @@ exports.read = (args = {}) => {
       if (opts.skip) return
     }
 
-    const populate = acceptsPopulate
-      ? (ctx.query.populate === false || ctx.query.populate === 'false'
-        ? []
-        : mergeArrayUnique(ctx.query.populate, defaultPopulate))
-      : mergeArrayUnique(defaultPopulate)
-
-    await exports.populate(model, doc, populate)
+    await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
     const safePaths = model.getSafePaths(label, ctx)
     ctx.body = model.getPublicDocument(doc, safePaths)
@@ -125,11 +115,7 @@ exports.update = (args = {}) => {
     }).exec()
     ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
 
-    const populate = acceptsPopulate
-      ? mergeArrayUnique(ctx.query.populate, defaultPopulate)
-      : mergeArrayUnique(defaultPopulate)
-
-    await exports.populate(model, doc, populate)
+    await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
     const safePathsForRead = model.getSafePaths(label, ctx)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)
@@ -165,11 +151,7 @@ exports.delete = (args = {}) => {
     const doc = await model.findByIdAndRemove(id).exec()
     ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
 
-    const populate = acceptsPopulate
-      ? mergeArrayUnique(ctx.query.populate, defaultPopulate)
-      : mergeArrayUnique(defaultPopulate)
-
-    await exports.populate(model, doc, populate)
+    await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
     const safePathsForRead = model.getSafePaths(label, ctx)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)
@@ -219,11 +201,7 @@ exports.upsert = (args = {}) => {
       doc = await model.create(safeData)
     }
 
-    const populate = acceptsPopulate
-      ? mergeArrayUnique(ctx.query.populate, defaultPopulate)
-      : mergeArrayUnique(defaultPopulate)
-
-    await exports.populate(model, doc, populate)
+    await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
     const safePathsForRead = model.getSafePaths('read', ctx)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)
@@ -343,11 +321,7 @@ exports.archive = (args = {}) => {
     const doc = await model.findByIdAndUpdate(id, { archived: true }).exec()
     ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
 
-    const populate = acceptsPopulate
-      ? mergeArrayUnique(ctx.query.populate, defaultPopulate)
-      : mergeArrayUnique(defaultPopulate)
-
-    await exports.populate(model, doc, populate)
+    await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
     const safePathsForRead = model.getSafePaths(label, ctx)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)

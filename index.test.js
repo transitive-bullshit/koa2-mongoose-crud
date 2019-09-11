@@ -193,7 +193,7 @@ describe('koa2-mongoose-crud', () => {
       assert.deepEqual(model.getSafePaths.args[0], ['label-create', ctx])
       assert.deepEqual(crud.filter.args[0], [{ name: 'fake-post' }, 'getSafePaths'])
       assert.deepEqual(model.create.args[0], ['safe-data'])
-      assert.deepEqual(crud.populate.args[0], [model, 'created-doc', ['a', 'c', 'b']])
+      assert.deepEqual(crud.populate.args[0], [model, 'created-doc', ['a', 'b'], ['a', 'c']])
       assert.deepEqual(model.getSafePaths.args[1], ['read', ctx])
       assert.deepEqual(model.getPublicDocument.args[0], ['created-doc', 'getSafePaths'])
     })
@@ -242,7 +242,7 @@ describe('koa2-mongoose-crud', () => {
 
       assert.deepEqual(model.findById.args[0], ['object-id'])
       assert.deepEqual(ctx.assert.args[0], ['found-doc', 404, 'Testmodel not found [object-id]'])
-      assert.deepEqual(crud.populate.args[0], [model, 'found-doc', ['a', 'b', 'c']])
+      assert.deepEqual(crud.populate.args[0], [model, 'found-doc', ['b', 'c'], ['a']])
       assert.deepEqual(model.getSafePaths.args[0], ['label-read', ctx])
       assert.deepEqual(model.getPublicDocument.args[0], ['found-doc', 'getSafePaths'])
       assert.deepEqual(ctx.body, 'getPublicDocument')
@@ -302,7 +302,7 @@ describe('koa2-mongoose-crud', () => {
         'safe-data',
         { runValidators: true }
       ])
-      assert.deepEqual(crud.populate.args[0], [model, 'doc', ['a', 'b', 'c']])
+      assert.deepEqual(crud.populate.args[0], [model, 'doc', ['b', 'c'], ['a']])
       assert.deepEqual(model.getSafePaths.args[1], ['label-update', ctx])
       assert.deepEqual(model.getPublicDocument.args[0], ['doc', 'getSafePaths'])
     })
@@ -345,7 +345,7 @@ describe('koa2-mongoose-crud', () => {
 
       assert.deepEqual(model.findByIdAndUpdate.args[0], ['object-id', { archived: true }])
       assert.deepEqual(ctx.assert.args[0], ['doc', 404, 'Testmodel not found [object-id]'])
-      assert.deepEqual(crud.populate.args[0], [model, 'doc', ['a', 'b', 'c']])
+      assert.deepEqual(crud.populate.args[0], [model, 'doc', ['b', 'c'], ['a']])
       assert.deepEqual(model.getSafePaths.args[0], ['label-archive', ctx])
       assert.deepEqual(model.getPublicDocument.args[0], ['doc', 'getSafePaths'])
     })
