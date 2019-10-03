@@ -67,7 +67,11 @@ Note that any model used with `koa2-mongoose-crud` must implement `model.getSafe
 
 ### ACLs
 
-You may pass an `acl` parameter (short for Access Control List) to any of the crud functions which has the signature `async function (ctx: Koa.Context, doc: mongoose.Document): Promise`. For all the methods aside from `create`, `acl` will be passed a mongoose document which matched the crud operation, and you may perform access control to verify, for example, that the currently authenticated user is authorized to perform the crud operation on that document. For `creeate`, you can use this to overwrite the document before it's created in Mongo. This is useful, for example, to ensure that the currently authenticated user is stored on a new doocument as it's created for future authorization control.
+You may pass an `acl` parameter (short for Access Control List) to any of the crud functions which has the signature `async function (ctx: Koa.Context, doc: mongoose.Document): Promise`.
+
+For all the methods aside from `create`, `acl` will be passed a mongoose document which matched the crud operation, and you may perform access control to verify, for example, that the currently authenticated user is authorized to perform the crud operation on that document.
+
+For `create`, you can use this to overwrite the document before it's created in Mongo. This is useful, for example, to ensure that the currently authenticated user is stored on a new doocument as it's created for future authorization control.
 
 ![](https://media.giphy.com/media/l3V0mgFspVuDAJK9y/giphy.gif)
 
