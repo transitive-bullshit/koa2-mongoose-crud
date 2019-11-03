@@ -99,17 +99,18 @@ exports.update = (args = {}) => {
   return async function update (ctx) {
     const { [idParamName]: id } = ctx.params
 
+    const data = await exports.parse(ctx)
+    const safePathsForUpdate = model.getSafePaths(label, ctx)
+    const safeData = exports.filter(data, safePathsForUpdate)
+
     if (acl) {
       const doc = await model.findById(id)
       ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
       const opts = { skip: false }
-      await acl(ctx, doc, opts)
+      await acl(ctx, doc, data, opts)
       if (opts.skip) return
     }
 
-    const data = await exports.parse(ctx)
-    const safePathsForUpdate = model.getSafePaths(label, ctx)
-    const safeData = exports.filter(data, safePathsForUpdate)
     const doc = await model.findByIdAndUpdate(id, safeData, {
       runValidators: true
     }).exec()
