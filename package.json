@@ -1,6 +1,6 @@
 {
   "name": "koa2-mongoose-crud",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Koa 2 CRUD middleware for Mongoose models.",
   "main": "index.js",
   "repository": "transitive-bullshit/koa2-mongoose-crud",
