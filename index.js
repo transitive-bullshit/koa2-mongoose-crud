@@ -30,6 +30,7 @@ exports.create = (args = {}) => {
 
   return async function create (ctx) {
     const data = await exports.parse(ctx)
+    ctx.assert(data, 400)
     const safePathsForCreate = model.getSafePaths(label, ctx)
     ctx.assert(safePathsForCreate, 500, `${model.constructor.modelName}:${label} not configured properly`)
     const safeData = exports.filter(data, safePathsForCreate)
@@ -103,6 +104,7 @@ exports.update = (args = {}) => {
     const { [idParamName]: id } = ctx.params
 
     const data = await exports.parse(ctx)
+    ctx.assert(data, 400)
     const safePathsForUpdate = model.getSafePaths(label, ctx)
     ctx.assert(safePathsForUpdate, 500, `${model.constructor.modelName}:${label} not configured properly`)
     const safeData = exports.filter(data, safePathsForUpdate)
@@ -182,6 +184,7 @@ exports.upsert = (args = {}) => {
 
   return async function upsert (ctx) {
     const data = await exports.parse(ctx)
+    ctx.assert(data, 400)
     const id = ctx.params[idParamName] || data._id
     let doc
 

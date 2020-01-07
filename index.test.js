@@ -294,7 +294,7 @@ describe('koa2-mongoose-crud', () => {
 
       await crud.update(opts)(ctx)
 
-      assert.deepEqual(ctx.assert.args[1], ['doc', 404, 'Testmodel not found [object-id]'])
+      assert.deepEqual(ctx.assert.args[2], ['doc', 404, 'Testmodel not found [object-id]'])
       assert.deepEqual(model.getSafePaths.args[0], ['label-update', ctx])
       assert.deepEqual(crud.filter.args[0], [{ name: 'fake-post' }, 'getSafePaths'])
       assert.deepEqual(model.findByIdAndUpdate.args[0], [
