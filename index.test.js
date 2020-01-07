@@ -294,7 +294,7 @@ describe('koa2-mongoose-crud', () => {
 
       await crud.update(opts)(ctx)
 
-      assert.deepEqual(ctx.assert.args[0], ['doc', 404, 'Testmodel not found [object-id]'])
+      assert.deepEqual(ctx.assert.args[1], ['doc', 404, 'Testmodel not found [object-id]'])
       assert.deepEqual(model.getSafePaths.args[0], ['label-update', ctx])
       assert.deepEqual(crud.filter.args[0], [{ name: 'fake-post' }, 'getSafePaths'])
       assert.deepEqual(model.findByIdAndUpdate.args[0], [
@@ -303,7 +303,7 @@ describe('koa2-mongoose-crud', () => {
         { runValidators: true }
       ])
       assert.deepEqual(crud.populate.args[0], [model, 'doc', ['b', 'c'], ['a']])
-      assert.deepEqual(model.getSafePaths.args[1], ['label-update', ctx])
+      assert.deepEqual(model.getSafePaths.args[1], ['read', ctx])
       assert.deepEqual(model.getPublicDocument.args[0], ['doc', 'getSafePaths'])
     })
   })
@@ -339,14 +339,13 @@ describe('koa2-mongoose-crud', () => {
         model,
         idParamName: 'foo',
         acceptsPopulate: true,
-        defaultPopulate: ['b', 'c'],
-        label: 'label-archive'
+        defaultPopulate: ['b', 'c']
       })(ctx)
 
       assert.deepEqual(model.findByIdAndUpdate.args[0], ['object-id', { archived: true }])
       assert.deepEqual(ctx.assert.args[0], ['doc', 404, 'Testmodel not found [object-id]'])
       assert.deepEqual(crud.populate.args[0], [model, 'doc', ['b', 'c'], ['a']])
-      assert.deepEqual(model.getSafePaths.args[0], ['label-archive', ctx])
+      assert.deepEqual(model.getSafePaths.args[0], ['read', ctx])
       assert.deepEqual(model.getPublicDocument.args[0], ['doc', 'getSafePaths'])
     })
   })

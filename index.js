@@ -31,6 +31,7 @@ exports.create = (args = {}) => {
   return async function create (ctx) {
     const data = await exports.parse(ctx)
     const safePathsForCreate = model.getSafePaths(label, ctx)
+    ctx.assert(safePathsForCreate, 500, `${model.constructor.modelName}:${label} not configured properly`)
     const safeData = exports.filter(data, safePathsForCreate)
 
     if (acl) {
@@ -44,6 +45,7 @@ exports.create = (args = {}) => {
     await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
     const safePathsForRead = model.getSafePaths('read', ctx)
+    ctx.assert(safePathsForRead, 500, `${model.constructor.modelName}:${label} not configured properly`)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)
     return model
   }
@@ -77,6 +79,7 @@ exports.read = (args = {}) => {
     await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
     const safePaths = model.getSafePaths(label, ctx)
+    ctx.assert(safePaths, 500, `${model.constructor.modelName}:${label} not configured properly`)
     ctx.body = model.getPublicDocument(doc, safePaths)
     return model
   }
@@ -101,6 +104,7 @@ exports.update = (args = {}) => {
 
     const data = await exports.parse(ctx)
     const safePathsForUpdate = model.getSafePaths(label, ctx)
+    ctx.assert(safePathsForUpdate, 500, `${model.constructor.modelName}:${label} not configured properly`)
     const safeData = exports.filter(data, safePathsForUpdate)
 
     if (acl) {
@@ -118,7 +122,8 @@ exports.update = (args = {}) => {
 
     await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
-    const safePathsForRead = model.getSafePaths(label, ctx)
+    const safePathsForRead = model.getSafePaths('read', ctx)
+    ctx.assert(safePathsForRead, 500, `${model.constructor.modelName}:${label} not configured properly`)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)
     return model
   }
@@ -130,8 +135,7 @@ exports.delete = (args = {}) => {
     idParamName,
     acceptsPopulate,
     defaultPopulate = [],
-    acl,
-    label = 'delete'
+    acl
   } = args
 
   ensureValidModel(model)
@@ -154,7 +158,8 @@ exports.delete = (args = {}) => {
 
     await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
-    const safePathsForRead = model.getSafePaths(label, ctx)
+    const safePathsForRead = model.getSafePaths('read', ctx)
+    ctx.assert(safePathsForRead, 500, `${model.constructor.modelName}:read not configured properly`)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)
     return model
   }
@@ -190,6 +195,7 @@ exports.upsert = (args = {}) => {
       }
 
       const safePathsForUpdate = model.getSafePaths(updateLabel, ctx)
+      ctx.assert(safePathsForUpdate, 500, `${model.constructor.modelName}:${updateLabel} not configured properly`)
       const safeData = exports.filter(data, safePathsForUpdate)
       doc = await model.findByIdAndUpdate(id, safeData, {
         new: true,
@@ -198,6 +204,7 @@ exports.upsert = (args = {}) => {
       ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
     } else {
       const safePathsForCreate = model.getSafePaths(createLabel, ctx)
+      ctx.assert(safePathsForCreate, 500, `${model.constructor.modelName}:${createLabel} not configured properly`)
       const safeData = exports.filter(data, safePathsForCreate)
       doc = await model.create(safeData)
     }
@@ -205,6 +212,7 @@ exports.upsert = (args = {}) => {
     await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
     const safePathsForRead = model.getSafePaths('read', ctx)
+    ctx.assert(safePathsForRead, 500, `${model.constructor.modelName}:read not configured properly`)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)
     return model
   }
@@ -244,7 +252,8 @@ exports.index = (args = {}) => {
       ? mergeArrayUnique(ctx.query.populate, defaultPopulate)
       : mergeArrayUnique(defaultPopulate)
 
-    const safePaths = model.getSafePaths(label, ctx)
+    const safePaths = model.getSafePaths(label, ctx) || model.getSafePaths('read', ctx)
+    ctx.assert(safePaths, 500, `${model.constructor.modelName}:${label} not configured properly`)
 
     ctx.type = 'json'
     ctx.body = query.cursor(query.options)
@@ -300,8 +309,7 @@ exports.archive = (args = {}) => {
     idParamName,
     acceptsPopulate,
     defaultPopulate = [],
-    acl,
-    label = 'archive'
+    acl
   } = args
 
   ensureValidModel(model)
@@ -324,7 +332,8 @@ exports.archive = (args = {}) => {
 
     await exports.populate(model, doc, defaultPopulate, acceptsPopulate && ctx.query.populate)
 
-    const safePathsForRead = model.getSafePaths(label, ctx)
+    const safePathsForRead = model.getSafePaths('read', ctx)
+    ctx.assert(safePathsForRead, 500, `${model.constructor.modelName}:read not configured properly`)
     ctx.body = model.getPublicDocument(doc, safePathsForRead)
     return model
   }
