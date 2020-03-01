@@ -1538,10 +1538,6 @@ mocha@^5.1.0:
     mkdirp "0.5.1"
     supports-color "4.4.0"
 
-mongoose-range-paginate@^0.0.5:
-  version "0.0.5"
-  resolved "https://registry.yarnpkg.com/mongoose-range-paginate/-/mongoose-range-paginate-0.0.5.tgz#1af2c0d5fe62e578ae0890d92e1dd1f4ac119895"
-
 ms@2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/ms/-/ms-2.0.0.tgz#5608aeadfc00be6c2901df5f9861788de0d597c8"

@@ -9,7 +9,6 @@ const mergeArrayUnique = require('./lib/merge-array-unique')
 
 exports.filter = require('filter-object')
 exports.flatten = require('flat')
-exports.paginate = require('mongoose-range-paginate')
 exports.parse = require('co-body')
 exports.through2 = require('through2').obj
 
@@ -240,6 +239,7 @@ exports.index = (args = {}) => {
     const where = acceptsFilters
       ? Object.assign({}, exports.parseWhere(ctx.query.where), defaultFilters)
       : defaultFilters
+    const { query: searchParams } = ctx
 
     const query = model.find(where)
 
@@ -247,12 +247,33 @@ exports.index = (args = {}) => {
       query.collation(model.collation)
     }
 
-    if (acceptsPagination && ctx.query !== undefined) {
-      exports.paginate(query, ctx.query)
+    let limit
+    let offset
+    let sort
+
+    if (acceptsPagination) {
+      limit = parseInt(searchParams.limit)
+      offset = parseInt(searchParams.offset)
+      sort = searchParams.sort
+    }
+
+    if (!limit) {
+      limit = 10
+    }
+
+    if (!offset) {
+      offset = 0
+    }
+
+    query.limit(limit)
+    query.offset(offset)
+
+    if (sort) {
+      query.sort(sort)
     }
 
     const populate = acceptsPopulate
-      ? mergeArrayUnique(ctx.query.populate, defaultPopulate)
+      ? mergeArrayUnique(searchParams.populate, defaultPopulate)
       : mergeArrayUnique(defaultPopulate)
 
     const safePaths = model.getSafePaths(label, ctx) || model.getSafePaths('read', ctx)
