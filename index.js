@@ -12,6 +12,7 @@ exports.flatten = require('flat')
 exports.parse = require('co-body')
 exports.through2 = require('through2').obj
 
+exports.paginate = require('./lib/paginate')
 exports.parseWhere = require('./lib/parse-where')
 exports.populate = require('./lib/populate')
 
@@ -225,7 +226,7 @@ exports.index = (args = {}) => {
     model,
     acceptsFilters,
     acceptsPopulate,
-    acceptsPagination,
+    acceptsPagination = true,
     defaultPopulate = [],
     defaultFilters = {},
     acl,
@@ -247,29 +248,8 @@ exports.index = (args = {}) => {
       query.collation(model.collation)
     }
 
-    let limit
-    let offset
-    let sort
-
     if (acceptsPagination) {
-      limit = parseInt(searchParams.limit)
-      offset = parseInt(searchParams.offset)
-      sort = searchParams.sort
-    }
-
-    if (!limit) {
-      limit = 10
-    }
-
-    if (!offset) {
-      offset = 0
-    }
-
-    query.limit(limit)
-    query.offset(offset)
-
-    if (sort) {
-      query.sort(sort)
+      exports.paginate(query, searchParams)
     }
 
     const populate = acceptsPopulate
