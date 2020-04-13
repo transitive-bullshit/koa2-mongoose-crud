@@ -118,7 +118,8 @@ exports.update = (args = {}) => {
     }
 
     const doc = await model.findByIdAndUpdate(id, safeData, {
-      runValidators: true
+      runValidators: true,
+      new: true
     }).exec()
     ctx.assert(doc, 404, `${model.modelName} not found [${id}]`)
 
