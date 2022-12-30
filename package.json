@@ -16,7 +16,7 @@
   "dependencies": {
     "co-body": "^5.1.1",
     "filter-object": "^3.0.0",
-    "flat": "^4.0.0",
+    "flat": "^5.0.1",
     "json-array-stream": "^0.1.2",
     "through2": "^2.0.3"
   },
